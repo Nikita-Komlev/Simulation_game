@@ -11,17 +11,22 @@ class Entity(ABC):
         ...
 
 
-
 class Grass(Entity):
-    pass
+    @property
+    def char(self) -> str:
+        return "G"
 
 
 class Rock(Entity):
-    pass
+    @property
+    def char(self) -> str:
+        return "R"
 
 
 class Tree(Entity):
-    pass
+    @property
+    def char(self) -> str:
+        return "T"
 
 
 class Creature(Entity):
