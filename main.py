@@ -5,6 +5,12 @@ class Entity(ABC):
     def __init__(self, location):
         self.location = location
 
+    @property
+    @abstractmethod
+    def char(self) -> str:
+        ...
+
+
 
 class Grass(Entity):
     pass
