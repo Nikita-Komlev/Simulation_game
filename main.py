@@ -74,3 +74,21 @@ class Map:
 
     def get_random_cell(self):
         ...
+
+
+class Simulation:
+    def __init__(self, game_map, render, actions):
+        self.map = game_map
+        self.render = render
+        self.actions = actions
+        self.turn_count = 0
+        self.is_paused = False
+
+    def next_turn(self):
+        ...
+
+    def start_simulation(self):
+        ...
+
+    def pause_simulation(self):
+        ...
