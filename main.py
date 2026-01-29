@@ -77,12 +77,13 @@ class Map:
 
 
 class Simulation:
-    def __init__(self, game_map, render, actions):
+    def __init__(self, game_map, render, init_actions=None, turn_actions=None):
         self.map = game_map
         self.render = render
-        self.actions = actions
         self.turn_count = 0
         self.is_paused = False
+        self.init_actions = init_actions if init_actions is not None else []
+        self.turn_actions = turn_actions if turn_actions is not None else []
 
     def next_turn(self):
         ...
@@ -118,6 +119,3 @@ class AddGrass(Action):
 class AddHerbivore(Action):
     def execute(self):
         ...
-
-    # init_actions = [SpawnEntities()]
-    # turn_actions = [MoveCreatures(), AddGrass(), AddHerbivore()]
