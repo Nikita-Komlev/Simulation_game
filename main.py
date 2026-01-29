@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from random import randint
 
 
 class Entity(ABC):
@@ -60,3 +61,16 @@ class Predator(Creature):
 
     def make_move(self):
         pass
+
+
+class Map:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.entities = dict()
+
+    def add_entity(self, entity):
+        ...
+
+    def get_random_cell(self):
+        ...
