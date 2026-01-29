@@ -92,3 +92,32 @@ class Simulation:
 
     def pause_simulation(self):
         ...
+
+
+class Action(ABC):
+    @abstractmethod
+    def execute(self):
+        ...
+
+
+class SpawnEntities(Action):
+    def execute(self):
+        ...
+
+
+class MoveCreatures(Action):
+    def execute(self):
+        ...
+
+
+class AddGrass(Action):
+    def execute(self):
+        ...
+
+
+class AddHerbivore(Action):
+    def execute(self):
+        ...
+
+    # init_actions = [SpawnEntities()]
+    # turn_actions = [MoveCreatures(), AddGrass(), AddHerbivore()]
