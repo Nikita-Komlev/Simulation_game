@@ -119,3 +119,8 @@ class AddGrass(Action):
 class AddHerbivore(Action):
     def execute(self):
         ...
+
+
+class Render:
+    def render(self, game_map):
+        ...
