@@ -75,6 +75,12 @@ class Map:
     def get_random_cell(self):
         ...
 
+    def passable(self, coord):
+        if self.entities.get(coord, None) is None or isinstance(self.entities.get(coord, None), Grass):
+            return True
+        else:
+            return False
+
 
 class Simulation:
     def __init__(self, game_map, render, init_actions=None, turn_actions=None):
