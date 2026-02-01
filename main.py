@@ -81,6 +81,24 @@ class Map:
         else:
             return False
 
+    def goal_test(self, creature, coord):  # проверка - явялется ли текущая клетка соответсвующей целью
+        if isinstance(creature, Herbivore) and isinstance(self.entities.get(coord, None), Grass):
+            return True
+        elif isinstance(creature, Predator) and self.passable(coord) and any(
+                isinstance(self.entities.get(neighbor, None), Herbivore) for neighbor in self.neighbors(coord)):
+            return True
+        else:
+            return False
+
+    def neighbors(self, coord):
+        neighbors_list = [(coord[0] - 1, coord[1]), (coord[0] + 1, coord[1]), (coord[0], coord[1] + 1),
+                          (coord[0], coord[1] - 1)]
+        result = list()
+        for neighbor in neighbors_list:
+            if (neighbor[0] >= 0 and neighbor[0] < self.width) and (neighbor[1] >= 0 and neighbor[1] < self.height):
+                result.append(neighbor)
+        return result
+
 
 class Simulation:
     def __init__(self, game_map, render, init_actions=None, turn_actions=None):
