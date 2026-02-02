@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections import deque
 from random import randint
 
 
@@ -81,7 +82,7 @@ class Map:
         else:
             return False
 
-    def goal_test(self, creature, coord):  # проверка - явялется ли текущая клетка соответсвующей целью
+    def goal_test(self, creature, coord):  # проверка - является ли текущая клетка соответствующей  целью
         if isinstance(creature, Herbivore) and isinstance(self.entities.get(coord, None), Grass):
             return True
         elif isinstance(creature, Predator) and self.passable(coord) and any(
@@ -148,3 +149,34 @@ class AddHerbivore(Action):
 class Render:
     def render(self, game_map):
         ...
+
+
+class Pathfinder:
+    def bfs_next_step(self, map_obj, creature, start):
+        queue = deque([start])
+        visited = {start}
+        parent = {start: None}
+
+        while queue:  # Если очереди нет, цель не найдена
+            coord = queue.popleft()  #
+
+            if map_obj.goal_test(creature, coord):
+                # Если старт удовлетворен цели - двигаться не нужно
+                if coord == start:
+                    return None
+
+                current = coord
+                while parent[current] != start:
+                    current = parent[current]
+                    if current is None:
+                        return None
+
+                # первый шаг от start
+                return current
+
+            for neighbor in map_obj.neighbors(coord):
+                if neighbor not in visited and map_obj.passable(neighbor):
+                    visited.add(neighbor)
+                    parent[neighbor] = coord
+                    queue.append(neighbor)
+        return None
