@@ -38,7 +38,7 @@ class Creature(Entity):
         self.health = health
 
     @abstractmethod
-    def make_move(self):  # возвращает намерение (следующую клетку / действие)
+    def make_move(self, map_obj, pathfinder):  # возвращает намерение (следующую клетку / действие)
         ...
 
 
@@ -60,8 +60,9 @@ class Predator(Creature):
     def char(self) -> str:
         return "P"
 
-    def make_move(self):
-        pass
+    def make_move(self, map_obj: "Map", pathfinder: "Pathfinder") -> tuple[int, int] | None:
+        next_step = pathfinder.bfs_next_step(map_obj, self, self.location)
+        return next_step
 
 
 class Map:
@@ -127,8 +128,7 @@ class Action(ABC):
 
 
 class SpawnEntities(Action):
-    def execute(self):
-        ...
+    ...
 
 
 class MoveCreatures(Action):
