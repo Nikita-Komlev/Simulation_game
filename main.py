@@ -47,8 +47,9 @@ class Herbivore(Creature):
     def char(self) -> str:
         return "H"
 
-    def make_move(self):
-        pass
+    def make_move(self, map_obj: "Map", pathfinder: "Pathfinder") -> tuple[int, int] | None:
+        next_step = pathfinder.bfs_next_step(map_obj, self, self.location)
+        return next_step
 
 
 class Predator(Creature):
