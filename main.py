@@ -133,8 +133,20 @@ class SpawnEntities(Action):
 
 
 class MoveCreatures(Action):
-    def execute(self):
-        ...
+    def execute(self, map_obj: "Map", pathfinder: "Pathfinder") -> None:
+        creatures = [e for e in list(map_obj.entities.values()) if isinstance(e, Creature)]
+
+        for creature in creatures:
+            # Если существо уже убрали/съели/переместили ранее этим же action — пропускаем
+            if map_obj.entities.get(creature.location) is not creature:
+                continue
+
+            next_step = creature.make_move(map_obj, pathfinder)
+            if next_step is None:
+                continue
+
+            if next_step is map_obj.neighbors(creature.location) and map_obj.passable(creature.location):
+                map_obj.move_entity(creature, next_step)
 
 
 class AddGrass(Action):
