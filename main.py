@@ -102,6 +102,29 @@ class Map:
                 result.append(neighbor)
         return result
 
+    def move_entity(self, creature: "Creature", new_coord: tuple[int, int]) -> bool:
+        if new_coord is None:
+            return False
+
+        if new_coord not in self.neighbors(creature.location):
+            return False  # пока считаем speed=1
+
+        target = self.entities.get(new_coord, None)
+
+        if target is not None and not isinstance(target, Grass):
+            return False
+
+        old = creature.location
+        if self.entities.get(old) is creature:
+            del self.entities[old]
+        else:
+            # карта и creature рассинхронизированы — безопасно отказываемся
+            return False
+
+        self.entities[new_coord] = creature
+        creature.location = new_coord
+        return True
+
 
 class Simulation:
     def __init__(self, game_map, render, init_actions=None, turn_actions=None):
