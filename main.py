@@ -72,7 +72,7 @@ class Map:
         self.height = height
         self.entities = dict()
 
-    def add_entity(self, entity):
+    def add_entity(self, entity_class):
         ...
 
     def get_random_cell(self):
@@ -134,6 +134,7 @@ class Simulation:
         self.is_paused = False
         self.init_actions = init_actions if init_actions is not None else []
         self.turn_actions = turn_actions if turn_actions is not None else []
+        self.entity_amount = {Rock: 10, Grass: 20, Herbivore: 5, Predator: 2}
 
     def next_turn(self):
         ...
@@ -147,16 +148,29 @@ class Simulation:
 
 class Action(ABC):
     @abstractmethod
-    def execute(self):
+    def execute(self, simulation_obj: "Simulation"):
         ...
 
 
 class SpawnEntities(Action):
-    ...
+    def execute(self, simulation_obj: "Simulation") -> None:
+
+        for entity_class, amount in simulation_obj.entity_amount.items():
+            for i in range(amount):
+                if not issubclass(entity_class, Creature):
+                    entity = entity_class(location=None)
+
+                elif entity_class is Predator:
+                    entity = entity_class(location=None, speed=1,
+                                          health=5, attack_power=3)  # в будущем можно поменять на рандомное число
+                else:
+                    entity = entity_class(location=None, speed=1, health=5)
+
+                simulation_obj.map.add_entity(entity)
 
 
 class MoveCreatures(Action):
-    def execute(self, map_obj: "Map", pathfinder: "Pathfinder") -> None:
+    def execute(self, map_obj: "Map", pathfinder: "Pathfinder") -> None:  # todo: change map_obj to simulation_obj
         creatures = [e for e in list(map_obj.entities.values()) if isinstance(e, Creature)]
 
         for creature in creatures:
