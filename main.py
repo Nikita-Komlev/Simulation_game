@@ -168,8 +168,7 @@ class MoveCreatures(Action):
             if next_step is None:
                 continue
 
-            if next_step is map_obj.neighbors(creature.location) and map_obj.passable(creature.location):
-                map_obj.move_entity(creature, next_step)
+            map_obj.move_entity(creature, next_step)
 
 
 class AddGrass(Action):
