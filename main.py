@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import deque
-from random import randint
+from random import randrange
+from tty import ISPEED
 
 
 class Entity(ABC):
@@ -72,11 +73,23 @@ class Map:
         self.height = height
         self.entities = dict()
 
-    def add_entity(self, entity_class):
-        ...
+    def add_entity(self, entity):
+        count = 0
 
-    def get_random_cell(self):
-        ...
+        while count <= 9:
+            random_cell = self.get_random_cell()
+            if random_cell not in self.entities:
+                break
+            count += 1
+        else:
+            raise RuntimeError("Не удалось выполнить условие за 10 попыток")
+
+        entity.location = random_cell
+        self.entities[random_cell] = entity
+
+
+    def get_random_cell(self) -> tuple[int, int]:
+        return randrange(0, self.width), randrange(0, self.height)
 
     def passable(self, coord):
         if self.entities.get(coord, None) is None or isinstance(self.entities.get(coord, None), Grass):
